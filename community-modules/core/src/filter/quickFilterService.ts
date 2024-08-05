@@ -212,7 +212,10 @@ export class QuickFilterService extends BeanStub<QuickFilterServiceEvent> implem
             value = colDef.getQuickFilterText(params);
         }
 
-        return _exists(value) ? value.toString().toUpperCase() : null;
+        if (!_exists(value)) return null;
+        if (typeof value === 'object') return Object.values(value).join(' ').toUpperCase();
+        if (Array.isArray(value)) return value.join(' ').toUpperCase();
+        return value.toString().toUpperCase();
     }
 
     private getQuickFilterAggregateText(node: RowNode): string {
